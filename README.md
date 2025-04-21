@@ -2,17 +2,116 @@
 
 A modern, responsive Todo List application built with React and Material-UI. The app features local storage persistence, drag-and-drop reordering, and integration with the JSONPlaceholder API for sample todos.
 
-## Features
+## Features Implemented
 
-- 📝 Add, delete, and mark todos as complete
-- 🔍 Search functionality for todos
-- 📱 Fully responsive design (320px to 1440px)
-- 🌓 Light/Dark theme toggle
-- 🎨 Modern UI with smooth animations
-- 📦 Local storage persistence
-- 🖱️ Drag-and-drop reordering
-- 🔄 API integration for sample todos
-- ⚡ Smooth transitions and hover effects
+### Core Functionality
+
+1. **Todo Management**
+
+   - Add new todos with validation
+   - Delete todos with confirmation
+   - Mark todos as complete/incomplete
+   - Local storage persistence
+   - Warning modal for empty todos
+
+2. **Search and Filter**
+
+   - Real-time search functionality
+   - Case-insensitive search
+   - Clear search option
+   - Filter completed todos in API view
+
+3. **Drag and Drop**
+
+   - Reorder todos with drag and drop
+   - Visual feedback during dragging
+   - Smooth animations
+   - State persistence after reordering
+
+4. **API Integration**
+
+   - Fetch sample todos from JSONPlaceholder
+   - Loading states with spinners
+   - Error handling with retry option
+   - Toggle completed todos visibility
+
+5. **Theme System**
+   - Light/Dark mode toggle
+   - Theme persistence
+   - Smooth transitions
+   - Consistent styling
+
+### UI/UX Features
+
+1. **Responsive Design**
+
+   - Mobile-first approach
+   - Adaptive layouts (320px - 1440px)
+   - Touch-friendly interactions
+   - Responsive typography
+
+2. **Animations and Transitions**
+
+   - Smooth hover effects
+   - Drag and drop animations
+   - Theme transition effects
+   - Loading state animations
+
+3. **Accessibility**
+   - Keyboard navigation
+   - ARIA labels
+   - High contrast themes
+   - Focus management
+
+## Technical Challenges and Solutions
+
+1. **State Management**
+
+   - Challenge: Handling multiple state updates efficiently
+   - Solution: Used React's useState and useEffect hooks
+   - Implemented proper state organization
+   - Added loading states for better UX
+
+2. **Drag and Drop Integration**
+
+   - Challenge: Compatibility issues with React 19
+   - Solution: Downgraded to React 18
+   - Implemented proper state management
+   - Added visual feedback during dragging
+
+3. **Responsive Design**
+
+   - Challenge: Complex layout requirements
+   - Solution: Used Material-UI's responsive utilities
+   - Implemented custom breakpoints
+   - Added touch-friendly interactions
+
+4. **API Integration**
+
+   - Challenge: Handling loading and error states
+   - Solution: Implemented proper error boundaries
+   - Added retry mechanism
+   - Used loading spinners for feedback
+
+5. **Performance Optimization**
+
+   - Challenge: Efficient rendering of large lists
+   - Solution: Implemented proper filtering
+   - Used React.memo for optimization
+   - Added debounced search
+
+6. **Theme Implementation**
+
+   - Challenge: Consistent styling across components
+   - Solution: Created centralized theme system
+   - Used Material-UI's theme provider
+   - Added theme persistence
+
+7. **Local Storage**
+   - Challenge: Data persistence and sync
+   - Solution: Implemented useEffect for auto-save
+   - Added proper error handling
+   - Used JSON serialization
 
 ## Prerequisites
 
@@ -119,8 +218,3 @@ to-do-list-app/
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-"# Technical-Assignment"

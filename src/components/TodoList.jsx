@@ -23,40 +23,47 @@ import WarningModal from "./WarningModal";
 
 const TodoList = () => {
   const theme = useTheme();
+  // State management for todos, new todo input, and search
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
 
+  // Load todos from localStorage on component mount
   useEffect(() => {
-    // Load todos from localStorage
     const savedTodos = localStorage.getItem("todos");
     if (savedTodos) {
       setTodos(JSON.parse(savedTodos));
     }
   }, []);
 
+  // Save todos to localStorage whenever they change
   useEffect(() => {
-    // Save todos to localStorage
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
 
+  // Handle adding a new todo with validation
   const handleAddTodo = () => {
     if (newTodo.trim() === "") {
       setShowWarning(true);
       return;
     }
     setIsLoading(true);
-    setTodos([...todos, { id: Date.now(), text: newTodo, completed: false }]);
-    setNewTodo("");
-    setTimeout(() => setIsLoading(false), 500); // Simulate loading
+    // Simulate loading state for better UX
+    setTimeout(() => {
+      setTodos([...todos, { id: Date.now(), text: newTodo, completed: false }]);
+      setNewTodo("");
+      setIsLoading(false);
+    }, 500);
   };
 
+  // Handle todo deletion
   const handleDeleteTodo = (id) => {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
 
+  // Toggle todo completion status
   const handleToggleComplete = (id) => {
     setTodos(
       todos.map((todo) =>
@@ -65,9 +72,11 @@ const TodoList = () => {
     );
   };
 
+  // Handle drag and drop reordering
   const handleDragEnd = (result) => {
     if (!result.destination) return;
 
+    // Create a new array with reordered items
     const items = Array.from(todos);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
@@ -75,6 +84,7 @@ const TodoList = () => {
     setTodos(items);
   };
 
+  // Filter todos based on search term
   const filteredTodos = todos.filter((todo) =>
     todo.text.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -96,6 +106,7 @@ const TodoList = () => {
           gap: { xs: 3, sm: 4 },
         }}
       >
+        {/* Header section with title */}
         <Typography
           variant="h4"
           component="h1"
@@ -116,6 +127,7 @@ const TodoList = () => {
           Todo List
         </Typography>
 
+        {/* Add todo section with input and button */}
         <Box
           sx={{
             display: "flex",
@@ -149,6 +161,7 @@ const TodoList = () => {
           </Button>
         </Box>
 
+        {/* Todo list with drag and drop functionality */}
         <Box sx={{ flex: 1, minHeight: "300px", overflow: "auto" }}>
           <DragDropContext onDragEnd={handleDragEnd}>
             <Droppable droppableId="todos">
@@ -242,6 +255,7 @@ const TodoList = () => {
           </DragDropContext>
         </Box>
 
+        {/* Search section at the bottom */}
         <Box
           sx={{
             display: "flex",
