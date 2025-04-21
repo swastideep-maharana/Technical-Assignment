@@ -5,13 +5,18 @@ import {
   createTheme,
   IconButton,
   Box,
+  Tabs,
+  Tab,
+  Paper,
 } from "@mui/material";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import TodoList from "./components/TodoList";
+import ApiTodos from "./components/ApiTodos";
 
 const App = () => {
   const [mode, setMode] = useState("light");
+  const [tabValue, setTabValue] = useState(0);
 
   const theme = useMemo(
     () =>
@@ -55,6 +60,17 @@ const App = () => {
               },
             },
           },
+          MuiTab: {
+            styleOverrides: {
+              root: {
+                textTransform: "none",
+                fontWeight: "bold",
+                minWidth: "auto",
+                padding: "8px 16px",
+                fontSize: "0.875rem",
+              },
+            },
+          },
         },
       }),
     [mode]
@@ -64,10 +80,24 @@ const App = () => {
     setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
   };
 
+  const handleTabChange = (event, newValue) => {
+    setTabValue(newValue);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box sx={{ position: "relative" }}>
+      <Box
+        sx={{
+          position: "relative",
+          minHeight: "100vh",
+          background:
+            mode === "light"
+              ? "linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)"
+              : "linear-gradient(135deg, #0a1929 0%, #001e3c 100%)",
+          p: 3,
+        }}
+      >
         <IconButton
           onClick={toggleColorMode}
           color="inherit"
@@ -77,18 +107,51 @@ const App = () => {
             right: 16,
             zIndex: 1000,
             backgroundColor: "background.paper",
-            boxShadow: 1,
+            boxShadow: 2,
             "&:hover": {
               backgroundColor:
                 mode === "light"
-                  ? "rgba(0, 0, 0, 0.04)"
-                  : "rgba(255, 255, 255, 0.08)",
+                  ? "rgba(25, 118, 210, 0.04)"
+                  : "rgba(144, 202, 249, 0.08)",
+              transform: "scale(1.1)",
+              transition: "transform 0.2s ease-in-out",
             },
           }}
         >
           {mode === "light" ? <Brightness4Icon /> : <Brightness7Icon />}
         </IconButton>
-        <TodoList />
+
+        <Box sx={{ maxWidth: 800, mx: "auto" }}>
+          <Paper
+            elevation={3}
+            sx={{
+              mb: 2,
+              borderRadius: 2,
+              background:
+                mode === "light"
+                  ? "rgba(255, 255, 255, 0.9)"
+                  : "rgba(30, 30, 30, 0.9)",
+              backdropFilter: "blur(10px)",
+            }}
+          >
+            <Tabs
+              value={tabValue}
+              onChange={handleTabChange}
+              centered
+              sx={{
+                "& .MuiTabs-indicator": {
+                  height: 2,
+                },
+                minHeight: "48px",
+              }}
+            >
+              <Tab label="My Todos" />
+              <Tab label="Sample Todos" />
+            </Tabs>
+          </Paper>
+
+          {tabValue === 0 ? <TodoList /> : <ApiTodos />}
+        </Box>
       </Box>
     </ThemeProvider>
   );
