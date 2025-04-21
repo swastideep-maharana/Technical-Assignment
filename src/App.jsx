@@ -95,7 +95,7 @@ const App = () => {
             mode === "light"
               ? "linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)"
               : "linear-gradient(135deg, #0a1929 0%, #001e3c 100%)",
-          p: 3,
+          p: { xs: 1, sm: 2, md: 3 },
         }}
       >
         <IconButton
@@ -103,8 +103,8 @@ const App = () => {
           color="inherit"
           sx={{
             position: "fixed",
-            top: 16,
-            right: 16,
+            top: { xs: 8, sm: 16 },
+            right: { xs: 8, sm: 16 },
             zIndex: 1000,
             backgroundColor: "background.paper",
             boxShadow: 2,
@@ -121,11 +121,17 @@ const App = () => {
           {mode === "light" ? <Brightness4Icon /> : <Brightness7Icon />}
         </IconButton>
 
-        <Box sx={{ maxWidth: 800, mx: "auto" }}>
+        <Box
+          sx={{
+            maxWidth: { xs: "100%", sm: 600, md: 800 },
+            mx: "auto",
+            width: "100%",
+          }}
+        >
           <Paper
             elevation={3}
             sx={{
-              mb: 2,
+              mb: { xs: 2, sm: 3 },
               borderRadius: 2,
               background:
                 mode === "light"
@@ -142,7 +148,11 @@ const App = () => {
                 "& .MuiTabs-indicator": {
                   height: 2,
                 },
-                minHeight: "48px",
+                minHeight: { xs: "40px", sm: "48px" },
+                "& .MuiTab-root": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem" },
+                  padding: { xs: "6px 12px", sm: "8px 16px" },
+                },
               }}
             >
               <Tab label="My Todos" />

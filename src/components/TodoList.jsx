@@ -14,6 +14,7 @@ import {
   InputAdornment,
   useTheme,
   Paper,
+  Button,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -83,7 +84,7 @@ const TodoList = () => {
       <Paper
         elevation={3}
         sx={{
-          p: 3,
+          p: { xs: 2, sm: 3 },
           borderRadius: 2,
           background:
             theme.palette.mode === "light"
@@ -92,7 +93,7 @@ const TodoList = () => {
           backdropFilter: "blur(10px)",
           display: "flex",
           flexDirection: "column",
-          minHeight: "70vh",
+          gap: { xs: 3, sm: 4 },
         }}
       >
         <Typography
@@ -102,7 +103,7 @@ const TodoList = () => {
           sx={{
             color: "text.primary",
             textAlign: "center",
-            mb: 4,
+            mb: 2,
             fontWeight: "bold",
             background:
               theme.palette.mode === "light"
@@ -115,61 +116,81 @@ const TodoList = () => {
           Todo List
         </Typography>
 
-        <Box sx={{ mb: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            gap: { xs: 2, sm: 1 },
+            alignItems: { xs: "stretch", sm: "center" },
+          }}
+        >
           <TextField
             fullWidth
             variant="outlined"
-            placeholder="Add a new task"
+            placeholder="Add a new todo..."
             value={newTodo}
             onChange={(e) => setNewTodo(e.target.value)}
             onKeyPress={(e) => e.key === "Enter" && handleAddTodo()}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    color="primary"
-                    onClick={handleAddTodo}
-                    disabled={isLoading}
-                    edge="end"
-                  >
-                    {isLoading ? <CircularProgress size={24} /> : <AddIcon />}
-                  </IconButton>
-                </InputAdornment>
-              ),
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                backgroundColor: "background.paper",
+              },
             }}
           />
+          <Button
+            variant="contained"
+            onClick={handleAddTodo}
+            sx={{
+              minWidth: { xs: "100%", sm: "auto" },
+              whiteSpace: "nowrap",
+            }}
+          >
+            Add Todo
+          </Button>
         </Box>
 
-        <Box sx={{ flex: 1, minHeight: "300px", overflow: "auto", mb: 2 }}>
+        <Box sx={{ flex: 1, minHeight: "300px", overflow: "auto" }}>
           <DragDropContext onDragEnd={handleDragEnd}>
             <Droppable droppableId="todos">
               {(provided) => (
-                <List {...provided.droppableProps} ref={provided.innerRef}>
+                <List
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  sx={{
+                    p: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 2,
+                  }}
+                >
                   {filteredTodos.map((todo, index) => (
                     <Draggable
                       key={todo.id}
                       draggableId={todo.id.toString()}
                       index={index}
                     >
-                      {(provided) => (
+                      {(provided, snapshot) => (
                         <ListItem
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                           sx={{
                             bgcolor: "background.paper",
-                            mb: 1,
                             borderRadius: 1,
-                            boxShadow: 1,
+                            boxShadow: snapshot.isDragging ? 3 : 1,
                             transition: "all 0.2s ease-in-out",
+                            p: { xs: 1.5, sm: 2 },
                             "&:hover": {
-                              transform: "translateY(-2px)",
+                              transform: snapshot.isDragging
+                                ? "scale(1.02)"
+                                : "translateY(-2px)",
                               boxShadow: 2,
                               bgcolor:
                                 theme.palette.mode === "light"
                                   ? "rgba(25, 118, 210, 0.04)"
                                   : "rgba(144, 202, 249, 0.08)",
                             },
+                            opacity: snapshot.isDragging ? 0.8 : 1,
                           }}
                         >
                           <Checkbox
@@ -182,8 +203,8 @@ const TodoList = () => {
                               },
                             }}
                           />
-                          <ListItemText
-                            primary={todo.text}
+                          <Typography
+                            variant="body1"
                             sx={{
                               textDecoration: todo.completed
                                 ? "line-through"
@@ -191,23 +212,25 @@ const TodoList = () => {
                               color: todo.completed
                                 ? "text.secondary"
                                 : "text.primary",
+                              flex: 1,
+                              wordBreak: "break-word",
+                              pr: { xs: 0, sm: 2 },
                             }}
-                          />
-                          <ListItemSecondaryAction>
-                            <IconButton
-                              edge="end"
-                              onClick={() => handleDeleteTodo(todo.id)}
-                              sx={{
-                                color: "error.main",
-                                "&:hover": {
-                                  backgroundColor: "error.light",
-                                  transform: "scale(1.1)",
-                                },
-                              }}
-                            >
-                              <DeleteIcon />
-                            </IconButton>
-                          </ListItemSecondaryAction>
+                          >
+                            {todo.text}
+                          </Typography>
+                          <IconButton
+                            onClick={() => handleDeleteTodo(todo.id)}
+                            sx={{
+                              color: "error.main",
+                              "&:hover": {
+                                backgroundColor: "error.light",
+                                color: "error.contrastText",
+                              },
+                            }}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
                         </ListItem>
                       )}
                     </Draggable>
@@ -219,21 +242,40 @@ const TodoList = () => {
           </DragDropContext>
         </Box>
 
-        <Box sx={{ mt: "auto" }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            gap: { xs: 2, sm: 1 },
+            alignItems: { xs: "stretch", sm: "center" },
+            mt: "auto",
+            pt: 2,
+            borderTop: 1,
+            borderColor: "divider",
+          }}
+        >
           <TextField
             fullWidth
             variant="outlined"
-            placeholder="Search tasks"
+            placeholder="Search todos..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon sx={{ color: "action.active" }} />
-                </InputAdornment>
-              ),
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                backgroundColor: "background.paper",
+              },
             }}
           />
+          <Button
+            variant="outlined"
+            onClick={() => setSearchTerm("")}
+            sx={{
+              minWidth: { xs: "100%", sm: "auto" },
+              whiteSpace: "nowrap",
+            }}
+          >
+            Clear Search
+          </Button>
         </Box>
       </Paper>
 

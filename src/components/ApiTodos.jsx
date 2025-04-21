@@ -52,7 +52,7 @@ const ApiTodos = () => {
     <Paper
       elevation={3}
       sx={{
-        p: 3,
+        p: { xs: 2, sm: 3 },
         borderRadius: 2,
         background:
           theme.palette.mode === "light"
@@ -60,14 +60,18 @@ const ApiTodos = () => {
             : "rgba(30, 30, 30, 0.9)",
         backdropFilter: "blur(10px)",
         minHeight: "300px",
+        display: "flex",
+        flexDirection: "column",
+        gap: { xs: 3, sm: 4 },
       }}
     >
       <Box
         sx={{
           display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
           justifyContent: "space-between",
-          alignItems: "center",
-          mb: 3,
+          alignItems: { xs: "flex-start", sm: "center" },
+          gap: { xs: 2, sm: 0 },
         }}
       >
         <Typography
@@ -80,6 +84,7 @@ const ApiTodos = () => {
                 : "linear-gradient(45deg, #90caf9, #64b5f6)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
+            fontSize: { xs: "1.25rem", sm: "1.5rem" },
           }}
         >
           Sample Todos from API
@@ -93,6 +98,9 @@ const ApiTodos = () => {
             />
           }
           label="Show Completed"
+          sx={{
+            ml: { xs: 0, sm: "auto" },
+          }}
         />
       </Box>
 
@@ -113,13 +121,12 @@ const ApiTodos = () => {
           {error}
         </Alert>
       ) : (
-        <List sx={{ p: 0 }}>
+        <List sx={{ p: 0, display: "flex", flexDirection: "column", gap: 2 }}>
           {filteredTodos.map((todo) => (
             <ListItem
               key={todo.id}
               sx={{
                 bgcolor: "background.paper",
-                mb: 1,
                 borderRadius: 1,
                 boxShadow: 1,
                 transition: "all 0.2s ease-in-out",
@@ -131,6 +138,7 @@ const ApiTodos = () => {
                       ? "rgba(25, 118, 210, 0.04)"
                       : "rgba(144, 202, 249, 0.08)",
                 },
+                p: { xs: 1.5, sm: 2 },
               }}
             >
               <Checkbox
@@ -149,6 +157,8 @@ const ApiTodos = () => {
                   textDecoration: todo.completed ? "line-through" : "none",
                   color: todo.completed ? "text.secondary" : "text.primary",
                   flex: 1,
+                  wordBreak: "break-word",
+                  fontSize: { xs: "0.875rem", sm: "1rem" },
                 }}
               >
                 {todo.title}
